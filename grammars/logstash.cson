@@ -1,5 +1,5 @@
 'scopeName': 'source.logstash'
 'fileTypes': [
-  'conf'
+  'logstash.conf'
 ]
 'name': 'Logstash'

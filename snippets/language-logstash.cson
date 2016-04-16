@@ -1,7 +1,10 @@
-'source.logstash':
+'.source.logstash':
   'input':
     'prefix': 'input'
-    'body': 'input {\n}'
+    'body': 'input {\n\t${1}\n}'
   'filter':
     'prefix': 'filter'
-    'body': 'filter {\n}'
+    'body': 'filter {\n\t${1}\n}'
+  'output':
+    'prefix': 'output'
+    'body': 'output {\n\t${1}\n}'
