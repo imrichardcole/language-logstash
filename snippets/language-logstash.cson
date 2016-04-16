@@ -1,0 +1,7 @@
+'source.logstash':
+  'input':
+    'prefix': 'input'
+    'body': 'input {\n}'
+  'filter':
+    'prefix': 'filter'
+    'body': 'filter {\n}'
