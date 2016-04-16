@@ -1,0 +1,17 @@
+{
+  "name": "language-logstash",
+  "version": "0.0.0",
+  "description": "Logstash config support in Atom",
+  "keywords": [
+  ],
+  "activationCommands": {
+    "atom-workspace": "language-logstash:toggle"
+  },
+  "repository": "https://github.com/atom/language-logstash",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=1.0.0 <2.0.0"
+  },
+  "dependencies": {
+  }
+}
