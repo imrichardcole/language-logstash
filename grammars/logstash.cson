@@ -3,3 +3,60 @@
   'logstash.conf'
 ]
 'name': 'Logstash'
+
+'patterns': [
+  {
+    'include': '#numbers'
+  }
+  {
+    'match': '\\b(input|filter|output)'
+    'name': 'constant.language.logstash'
+  }
+  {
+    'match': '\\b\\w+\\s*(?==>)\\s*'
+    'name': 'constant.other.key.logstash'
+  }
+  {
+    'include': '#single_quoted_string'
+  }
+  {
+    'include': '#double_quoted_string'
+  }
+]
+'repository':
+  'double_quoted_string':
+    'begin': '"'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.string.begin.yaml'
+    'end': '"'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.string.end.yaml'
+    'name': 'string.quoted.double.yaml'
+    'patterns': [
+      {
+        'include': '#escaped_char'
+      }
+      {
+        'include': '#erb'
+      }
+    ]
+  'single_quoted_string':
+    'begin': '\''
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.definition.string.begin.yaml'
+    'end': '\''
+    'endCaptures':
+      '0':
+        'name': 'punctuation.definition.string.end.yaml'
+    'name': 'string.quoted.single.yaml'
+    'patterns': [
+      {
+        'include': '#escaped_char'
+      }
+      {
+        'include': '#erb'
+      }
+    ]

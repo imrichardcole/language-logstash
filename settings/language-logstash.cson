@@ -1,3 +1,7 @@
 '.source.logstash':
   'editor':
     'commentStart': '# '
+    'completions': [
+      'rubydebug'
+      'json'
+    ]
