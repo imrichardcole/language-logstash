@@ -1,2 +1,2 @@
 ## 0.0.1 - First Release
-* work in progress...
+* support for `input` ,`filter` and `output`s= snippets.
