@@ -6,57 +6,76 @@
 
 'patterns': [
   {
-    'include': '#numbers'
+    match: "^(input|filter|codec|output)"
+    name: "entity.name.type.class.logstash"
   }
   {
-    'match': '\\b(input|filter|output|stdout|influxdb|csv|date|drop)'
-    'name': 'keyword.other.logstash'
+    comment: "comments"
+    match: "^(\\s*)?#.+"
+    name: "comment.line.number-sign.logstash"
   }
   {
-    'match': '\\b\\w+\\s*(?==>)\\s*'
-    'name': 'constant.other.key.logstash'
+    comment: "single quoted string values"
+    match: "(\')(.+?)[^\']*(\')"
+    name: "string.text.logstash"
   }
   {
-    'include': '#single_quoted_string'
+    comment: "double quoted string values"
+    match: "(\")(.+?)[^\"]*(\")"
+    name: "string.text.logstash"
   }
   {
-    'include': '#double_quoted_string'
+    captures:
+      "2":
+        name: "entity.name.function.logstash"
+      "5":
+        name: "variable.text.logstash"
+      "7":
+        name: "keyword.operator.logstash"
+    comment: "functions: types of inputs, codecs, filters and outputs"
+    match: "^(\\s*)(\\w+)(\\s*{)(\\s*)?(\\w+)?(\\s*)?(=>)?(\\s*)?"
+    name: "text.logstash"
+  }
+  {
+    captures:
+      "2":
+        name: "variable.text.logstash"
+      "4":
+        name: "keyword.operator.logstash"
+      "6":
+        name: "constant.numeric.logstash"
+    comment: "number variable"
+    match: "^(\\s*)?(\\w+)(\\s*)?(=>)(\\s*)?(\\d+)"
+    name: "keyword.text.logstash"
+  }
+  {
+    captures:
+      "2":
+        name: "variable.text.logstash"
+      "4":
+        name: "keyword.operator.logstash"
+    comment: "double quoted string variable"
+    match: "^(\\s*)?(\\w+)(\\s*)?(=>)(\\s*)?"
+    name: "keyword.text.logstash"
+  }
+  {
+    captures:
+      "1":
+        name: "keyword.control.logstash"
+      "4":
+        name: "entity.name.function.logstash"
+      "7":
+        name: "keyword.operator.logstash"
+    comment: "if/else if statements"
+    match: "(if|else if|else)(\\s+)(\\[)(\\w*)(\\])(\\s*)(==|!=|<|>|<=|>=|=~|!~|in|not in|!)"
+    name: "text.logstash"
+  }
+  {
+    captures:
+      "1":
+        name: "keyword.control.logstash"
+    comment: "else statements"
+    match: "(else)(\\s+)({)"
+    name: "text.logstash"
   }
 ]
-'repository':
-  'double_quoted_string':
-    'begin': '"'
-    'beginCaptures':
-      '0':
-        'name': 'punctuation.definition.string.begin.yaml'
-    'end': '"'
-    'endCaptures':
-      '0':
-        'name': 'punctuation.definition.string.end.yaml'
-    'name': 'string.quoted.double.yaml'
-    'patterns': [
-      {
-        'include': '#escaped_char'
-      }
-      {
-        'include': '#erb'
-      }
-    ]
-  'single_quoted_string':
-    'begin': '\''
-    'beginCaptures':
-      '0':
-        'name': 'punctuation.definition.string.begin.yaml'
-    'end': '\''
-    'endCaptures':
-      '0':
-        'name': 'punctuation.definition.string.end.yaml'
-    'name': 'string.quoted.single.yaml'
-    'patterns': [
-      {
-        'include': '#escaped_char'
-      }
-      {
-        'include': '#erb'
-      }
-    ]

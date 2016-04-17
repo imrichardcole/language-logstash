@@ -17,6 +17,18 @@
   'workers':
     'prefix': 'workers'
     'body': 'workers => ${1:number}$0'
-  'entry':
-    'prefix': '=>'
-    'body': '\'${1:key}\' => \'${2:value}\'$3'
+  'array':
+    'prefix': 'array'
+    'body': '${1:name} => [ \"${2:value}\" ]'
+  'hash':
+    'prefix': 'hash'
+    'body': '${1:name} => { \"${2:key}\" => \"${3:value}\" }'
+  'string':
+    'prefix': 'string'
+    'body': '${1:name} => \"${2:value}\"$3'
+  'boolean':
+    'prefix': 'boolean'
+    'body': '${1:name} => $2true'
+  'number':
+    'prefix': 'num'
+    'body': '${1:name} => $2'
