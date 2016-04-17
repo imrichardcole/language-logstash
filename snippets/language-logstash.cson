@@ -17,12 +17,6 @@
   'workers':
     'prefix': 'workers'
     'body': 'workers => ${1:number}$0'
-  'influxdb':
-    'prefix': 'influxdb'
-    'body': 'influxdb {\n\tdata_points => {\n\t$2\n\t}\n\thost => \'${1:host}\'\n}'
   'entry':
     'prefix': '=>'
     'body': '\'${1:key}\' => \'${2:value}\'$3'
-  'beats':
-    'prefix': 'beats'
-    'body': 'beats {\n\tport => ${1:port}\n}$2'

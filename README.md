@@ -1,4 +1,4 @@
-# Logstash config support in Atom
+# Logstash config support in Atom[![Build Status](https://travis-ci.org/imrichardcole/language-logstash.svg?branch=master)](https://travis-ci.org/imrichardcole/language-logstash)
 
 Adds syntax highlighting and auto-complete for writing logstash files in Atom.
 

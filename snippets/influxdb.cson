@@ -1,0 +1,4 @@
+'.source.logstash':
+  'influxdb':
+    'prefix': 'influxdb'
+    'body': 'influxdb {\n\tdata_points => {\n\t$2\n\t}\n\thost => \'${1:host}\'\n}'

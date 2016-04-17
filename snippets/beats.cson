@@ -1,0 +1,4 @@
+'.source.logstash':
+  'beats':
+    'prefix': 'beats'
+    'body': 'beats {\n\tport => ${1:port}\n}$2'
