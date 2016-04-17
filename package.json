@@ -1,6 +1,6 @@
 {
   "name": "language-logstash",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Logstash config support in Atom",
   "keywords": [],
   "repository": "https://github.com/imrichardcole/language-logstash",
