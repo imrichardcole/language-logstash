@@ -9,8 +9,8 @@
     'include': '#numbers'
   }
   {
-    'match': '\\b(input|filter|output)'
-    'name': 'constant.language.logstash'
+    'match': '\\b(input|filter|output|stdout|influxdb|csv|date|drop)'
+    'name': 'keyword.other.logstash'
   }
   {
     'match': '\\b\\w+\\s*(?==>)\\s*'
