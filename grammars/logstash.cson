@@ -74,6 +74,19 @@
     captures:
       "1":
         name: "keyword.control.logstash"
+      "3":
+        name: "string.text.logstash"
+      "5":
+        name: "keyword.operator.logstash"
+      "8":
+        name: "entity.name.function.logstash"
+    comment: "if/else from bug reports"
+    match: "(if)(\\s+)(\"\\w*\")(\\s+)(in)(\\s+)(\\[(\\w*)\\])"
+  }
+  {
+    captures:
+      "1":
+        name: "keyword.control.logstash"
     comment: "else statements"
     match: "(else)(\\s+)({)"
     name: "text.logstash"
