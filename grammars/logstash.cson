@@ -38,25 +38,26 @@
   }
   {
     captures:
-      "2":
+      "1":
         name: "variable.text.logstash"
-      "4":
+      "2":
         name: "keyword.operator.logstash"
-      "6":
+      "3":
         name: "constant.numeric.logstash"
     comment: "number variable"
-    match: "^(\\s*)?(\\w+)(\\s*)?(=>)(\\s*)?(\\d+)"
-    name: "keyword.text.logstash"
+    match: "(\\w*)\\s+(\=>)\\s+(\\d+)"
   }
   {
     captures:
-      "2":
+      "1":
         name: "variable.text.logstash"
-      "4":
+      "2":
         name: "keyword.operator.logstash"
-    comment: "double quoted string variable"
-    match: "^(\\s*)?(\\w+)(\\s*)?(=>)(\\s*)?"
-    name: "keyword.text.logstash"
+      "3":
+        name: "constant.numeric.logstash"
+    comment: "single line number variable"
+    match: "(\\w+)(\\s*{)\\s+(\\w*)\\s+(\=>)\\s+(\\d+)\\s+\}"
+    name: "single.line.number.variable.logstash"
   }
   {
     captures:
