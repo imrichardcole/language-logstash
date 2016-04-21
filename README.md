@@ -2,6 +2,8 @@
 
 Adds syntax highlighting and snippets for writing logstash files in Atom.
 
+![usage](usage.gif)
+
 Please raise issues for any new features or bugs.
 
 Developed by [@imrichardcole](https://twitter.com/imrichardcole)
