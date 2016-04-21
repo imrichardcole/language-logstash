@@ -27,5 +27,5 @@ describe "Logstash grammar", ->
       {tokens} = grammar.tokenizeLine("if \"apache\" in [tags]")
       expect(tokens[0]).toEqual value: 'if', scopes: ['source.logstash', 'keyword.control.logstash']
       expect(tokens[2]).toEqual value: '"apache"', scopes: ['source.logstash', 'string.text.logstash']
-      expect(tokens[4]).toEqual value: 'in', scopes: ['source.logstash', 'keyword.text.logstash', 'constant.numeric.logstash']
+      expect(tokens[4]).toEqual value: 'in', scopes: ['source.logstash', 'keyword.operator.logstash']
       expect(tokens[6]).toEqual value: 'tags', scopes: ['source.logstash', 'entity.name.function.logstash']
