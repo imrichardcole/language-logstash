@@ -10,6 +10,13 @@
     name: "entity.name.type.class.logstash"
   }
   {
+    captures:
+      "2":
+        name: "entity.name.function.logstash"
+    comment: "functions: types of inputs, codecs, filters and outputs"
+    match: "^(\\s*)(\\w+)(\\s*{)"
+  }
+  {
     comment: "comments"
     match: "^(\\s*)?#.+"
     name: "comment.line.number-sign.logstash"
@@ -23,18 +30,6 @@
     comment: "double quoted string values"
     match: "(\")(.+?)[^\"]*(\")"
     name: "string.text.logstash"
-  }
-  {
-    captures:
-      "2":
-        name: "entity.name.function.logstash"
-      "5":
-        name: "variable.text.logstash"
-      "7":
-        name: "keyword.operator.logstash"
-    comment: "functions: types of inputs, codecs, filters and outputs"
-    match: "^(\\s*)(\\w+)(\\s*{)(\\s*)?(\\w+)?(\\s*)?(=>)?(\\s*)?"
-    name: "text.logstash"
   }
   {
     captures:
@@ -54,9 +49,22 @@
       "2":
         name: "keyword.operator.logstash"
       "3":
+        name: "string.text.logstash"
+    comment: "string variable"
+    match: "(\\w*)\\s+(\=>)\\s+(\\w*)"
+  }
+  {
+    captures:
+      "1":
+        name: "entity.name.function.logstash"
+      "2":
+        name: "variable.text.logstash"
+      "3":
+        name: "keyword.operator.logstash"
+      "4":
         name: "constant.numeric.logstash"
     comment: "single line number variable"
-    match: "(\\w+)(\\s*{)\\s+(\\w*)\\s+(\=>)\\s+(\\d+)\\s+\}"
+    match: "(\\w*)\\s*\{\\s+(\\w*)\\s+(\=>)\\s+(\\d+)\\s+(\})"
     name: "single.line.number.variable.logstash"
   }
   {
