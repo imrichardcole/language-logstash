@@ -71,13 +71,22 @@
     captures:
       "1":
         name: "keyword.control.logstash"
-      "4":
+    comment: "if/else if statements"
+    match: "(if|else if|else)"
+  }
+  {
+    captures:
+      "2":
         name: "entity.name.function.logstash"
-      "7":
+    comment: "if/else if statements"
+    match: "(\\[(\\w*)\\])"
+  }
+  {
+    captures:
+      "1":
         name: "keyword.operator.logstash"
     comment: "if/else if statements"
-    match: "(if|else if|else)(\\s+)(\\[)(\\w*)(\\])(\\s*)(==|!=|<|>|<=|>=|=~|!~|in|not in|!)"
-    name: "text.logstash"
+    match: "(==|!=|<|>|<=|>=|=~|!~|in|not in|!)"
   }
   {
     captures:

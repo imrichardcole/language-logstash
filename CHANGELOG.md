@@ -1,3 +1,12 @@
+## 0.1.6
+* [issue #6](https://github.com/imrichardcole/language-logstash/issues/6) issue with multiple if conditiona.
+
+## 0.1.5
+* [issue #7](https://github.com/imrichardcole/language-logstash/issues/7) now support any files with conf extension.
+
+## 0.1.4
+* failed release of 0.1.3
+
 ## 0.1.3
 * [issue #2](https://github.com/imrichardcole/language-logstash/issues/2) added specs appeal.
 * [issue #3](https://github.com/imrichardcole/language-logstash/issues/3) if grammar issue fixed.
