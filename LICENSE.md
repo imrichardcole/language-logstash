@@ -1,3 +1,5 @@
+The MIT License (MIT)
+
 Copyright (c) 2016 Richard Cole
 
 Permission is hereby granted, free of charge, to any person obtaining
