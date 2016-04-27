@@ -61,3 +61,8 @@ describe "Logstash grammar", ->
       expect(tokens[11]).toEqual value: 'client_ip', scopes: ['source.logstash', 'entity.name.function.logstash']
       expect(tokens[14]).toEqual value: '==', scopes: ['source.logstash', 'keyword.operator.logstash']
       expect(tokens[16]).toEqual value: "\"122.122.122.122\"", scopes: ['source.logstash', 'string.text.logstash']
+
+    it "if with special character", ->
+      {tokens} = grammar.tokenizeLine("if [@client_ip]")
+      expect(tokens[0]).toEqual value: 'if', scopes: ['source.logstash', 'keyword.control.logstash']
+      expect(tokens[3]).toEqual value: '@client_ip', scopes: ['source.logstash', 'entity.name.function.logstash']

@@ -79,7 +79,7 @@
       "2":
         name: "entity.name.function.logstash"
     comment: "if/else if statements"
-    match: "(\\[(\\w*)\\])"
+    match: "(\\[(.\\w*)\\])"
   }
   {
     captures:

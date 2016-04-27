@@ -1,5 +1,8 @@
+## 0.1.7
+* [issue #5](https://github.com/imrichardcole/language-logstash/issues/5) issue with if statement with @ character.
+
 ## 0.1.6
-* [issue #6](https://github.com/imrichardcole/language-logstash/issues/6) issue with multiple if conditiona.
+* [issue #6](https://github.com/imrichardcole/language-logstash/issues/6) issue with multiple if condition.
 
 ## 0.1.5
 * [issue #7](https://github.com/imrichardcole/language-logstash/issues/7) now support any files with conf extension.
