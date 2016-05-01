@@ -1,112 +1,598 @@
+'comment': '
+###
+### Copyright © 2016 Petr Rehor <rx@rx.cz>
+### Released under MIT license, see LICENSE.MD
+###
+### Logstash syntax definition:
+### https://github.com/elastic/logstash/blob/master/logstash-core/lib/logstash/config/grammar.treetop
+###
+### Ruby Regex definition:
+### http://ruby-doc.org/core-2.2.0/Regexp.html
+###
+'
 'scopeName': 'source.logstash'
-'fileTypes': [
-  'conf'
-]
 'name': 'Logstash'
-
-'patterns': [
-  {
-    match: "^(input|filter|codec|output)"
-    name: "entity.name.type.class.logstash"
-  }
-  {
-    captures:
-      "2":
-        name: "entity.name.function.logstash"
-    comment: "functions: types of inputs, codecs, filters and outputs"
-    match: "^(\\s*)(\\w+)(\\s*{)"
-  }
-  {
-    comment: "comments"
-    match: "^(\\s*)?#.+"
-    name: "comment.line.number-sign.logstash"
-  }
-  {
-    comment: "single quoted string values"
-    match: "(\')(.+?)[^\']*(\')"
-    name: "string.text.logstash"
-  }
-  {
-    comment: "double quoted string values"
-    match: "(\")(.+?)[^\"]*(\")"
-    name: "string.text.logstash"
-  }
-  {
-    captures:
-      "1":
-        name: "variable.text.logstash"
-      "2":
-        name: "keyword.operator.logstash"
-      "3":
-        name: "constant.numeric.logstash"
-    comment: "number variable"
-    match: "(\\w*)\\s+(\=>)\\s+(\\d+)"
-  }
-  {
-    captures:
-      "1":
-        name: "variable.text.logstash"
-      "2":
-        name: "keyword.operator.logstash"
-      "3":
-        name: "string.text.logstash"
-    comment: "string variable"
-    match: "(\\w*)\\s+(\=>)\\s+(\\w*)"
-  }
-  {
-    captures:
-      "1":
-        name: "entity.name.function.logstash"
-      "2":
-        name: "variable.text.logstash"
-      "3":
-        name: "keyword.operator.logstash"
-      "4":
-        name: "constant.numeric.logstash"
-    comment: "single line number variable"
-    match: "(\\w*)\\s*\{\\s+(\\w*)\\s+(\=>)\\s+(\\d+)\\s+(\})"
-    name: "single.line.number.variable.logstash"
-  }
-  {
-    captures:
-      "1":
-        name: "keyword.control.logstash"
-    comment: "if/else if statements"
-    match: "(if|else if|else)"
-  }
-  {
-    captures:
-      "2":
-        name: "entity.name.function.logstash"
-    comment: "if/else if statements"
-    match: "(\\[(.\\w*)\\])"
-  }
-  {
-    captures:
-      "1":
-        name: "keyword.operator.logstash"
-    comment: "if/else if statements"
-    match: "(==|!=|<|>|<=|>=|=~|!~|in|not in|!)"
-  }
-  {
-    captures:
-      "1":
-        name: "keyword.control.logstash"
-      "3":
-        name: "string.text.logstash"
-      "5":
-        name: "keyword.operator.logstash"
-      "8":
-        name: "entity.name.function.logstash"
-    comment: "if/else from bug reports"
-    match: "(if)(\\s+)(\"\\w*\")(\\s+)(in)(\\s+)(\\[(\\w*)\\])"
-  }
-  {
-    captures:
-      "1":
-        name: "keyword.control.logstash"
-    comment: "else statements"
-    match: "(else)(\\s+)({)"
-    name: "text.logstash"
-  }
+'uuid': '644e379a-77b5-42ce-a5e0-91bbf1ea1abf'
+'fileTypes': [
+    'logstash.conf'
 ]
+'patterns': [
+    { 'include': '#COMMENT' }
+    { 'include': '#SECTION' }
+]
+'repository': {
+    'ARRAY': {
+        'name': 'meta.array.logstash'
+        'begin': '\\['
+        'beginCaptures': {
+            0: 'name': 'punctuation.definition.array.begin.logstash'
+        }
+        'end': '\\]'
+        'endCaptures': {
+            0: 'name': 'punctuation.definition.array.end.logstash'
+        }
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'include': '#BAREWORD'
+        },{
+            'include': '#STRING'
+        },{
+            'include': '#NUMBER'
+        },{
+            'include': '#ARRAY'
+        },{
+            'include': '#HASH'
+        },{
+            'name': 'punctuation.separator.array.logstash', 'match': ','
+        }]
+    }
+    'ATTRIBUTE': {
+        'comment': 'Plugin attributes'
+        'name': 'meta.key-value.logstash'
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'comment': 'Embeded ruby code'
+            'begin': '(?<=^|\\{|\\}|\\]|"|\'|[A-Za-z0-9_]\\s)\\s*((|"|\')code(\\k<2>))\\s*(=>)'
+            'beginCaptures': {
+                1: 'name': 'entity.other.attribute-name.logstash'
+                4: 'name': 'keyword.operator.key-value.logstash'
+            }
+            'end': '(?<=\\]|\\}|[A-Za-z0-9_]|"|\')'
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#RUBY_INTERPOLATED'
+            }]
+        },{
+            'comment': 'Literal attribute name'
+            'name': 'meta.key-value.logstash'
+            'begin': '(?<=^|\\{|\\}|\\]|"|\'|[A-Za-z0-9_]\\s)\\s*([A-Za-z0-9_\\-]+)\\s*(=>)'
+            'beginCaptures': {
+                1: 'name': 'entity.other.attribute-name.logstash'
+                2: 'name': 'keyword.operator.key-value.logstash'
+            }
+            'end': '(?<=\\]|\\}|[A-Za-z0-9_]|"|\')'
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#BAREWORD'
+            },{
+                'include': '#STRING'
+            },{
+                'include': '#NUMBER'
+            },{
+                'include': '#ARRAY'
+            },{
+                'include': '#HASH'
+            },{
+                'include': '#PLUGIN'
+            }]
+        },{
+            'comment': 'Double quoted plugin name'
+            'name': 'meta.key-value.logstash'
+            'begin': '(?<=^|\\{|\\}|\\]|"|\'|[A-Za-z0-9_]\\s)\\s*("(?:\\"|[^"])*")\\s*(=>)'
+            'beginCaptures': {
+                1: 'name': 'entity.other.attribute-name.logstash'
+                2: 'name': 'keyword.operator.key-value.logstash'
+            }
+            'end': '(?<=\\]|\\}|[A-Za-z0-9_]|"|\')'
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#BAREWORD'
+            },{
+                'include': '#STRING'
+            },{
+                'include': '#NUMBER'
+            },{
+                'include': '#ARRAY'
+            },{
+                'include': '#HASH'
+            },{
+                'include': '#PLUGIN'
+            }]
+        },{
+            'comment': 'Single quoted plugin name'
+            'name': 'meta.key-value.logstash'
+            'begin': '(?<=^|\\{|\\}|\\]|"|\'|[A-Za-z0-9_]\\s)\\s*(\'(?:\\\'|[^\'])*\')\\s*(=>)'
+            'beginCaptures': {
+                1: 'name': 'entity.other.attribute-name.logstash'
+                2: 'name': 'keyword.operator.key-value.logstash'
+            }
+            'end': '(?<=\\]|\\}|[A-Za-z0-9_]|"|\')'
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#BAREWORD'
+            },{
+                'include': '#STRING'
+            },{
+                'include': '#NUMBER'
+            },{
+                'include': '#ARRAY'
+            },{
+                'include': '#HASH'
+            },{
+                'include': '#PLUGIN'
+            }]
+        },{
+            'comment': 'Invalid attribute name'
+            'name': 'meta.key-value.logstash'
+            'begin': '(?<=^|\\{|\\}|\\]|"|\'|[A-Za-z0-9_]\\s)\\s*([\\S&&#]\\S*)\\s*(=>)'
+            'beginCaptures': {
+                1: 'name': 'invalid.illegal.attribute-name.logstash'
+                2: 'name': 'punctuation.definition.key-value.begin.logstash'
+            }
+            'end': '(?<=\\]|\\}|[A-Za-z0-9_]|"|\')'
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#BAREWORD'
+            },{
+                'include': '#STRING'
+            },{
+                'include': '#NUMBER'
+            },{
+                'include': '#ARRAY'
+            },{
+                'include': '#HASH'
+            },{
+                'include': '#PLUGIN'
+            }]
+        }]
+    }
+    'BAREWORD': {
+        'patterns': [{
+            'comment': 'Boolean constans'
+            'name': 'constant.language.boolean.logstash'
+            'match': '\\b(?:false|true)\\b'
+        },{
+            'comment': 'Other barewords'
+            'name': 'constant.other.logstash'
+            'match': '\\b(?:[A-Za-z_][A-Za-z0-9_]*)\\b'
+        }]
+    }
+    'BRANCH_OR_PLUGIN': {
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'comment': 'If statement'
+            'name': 'meta.statement.logstash'
+            'begin': '(?<=^|\\{|\\}|else)\\s*(if)\\b'
+            'beginCaptures': {
+                1: 'name': 'keyword.control.logstash'
+            }
+            'end': '(?=\\{)'
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#CONDITION'
+            }]
+        },{
+            'comment': 'Else statement'
+            'name': 'meta.statement.logstash'
+            'match': '(?<=^|\\{|\\})\\s*(else)\\b'
+            'captures': {
+                1: 'name': 'keyword.control.logstash'
+            }
+        },{
+            'include': '#PLUGIN'
+        },{
+            'comment': 'Block'
+            'name': 'meta.block.logstash'
+            'begin': '\\{'
+            'beginCaptures': {
+                0: 'name': 'punctuation.definition.block.begin.logstash'
+            }
+            'end': '\\}'
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.block.end.logstash'
+            }
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#BRANCH_OR_PLUGIN'
+            }]
+        }]
+    }
+    'COMMENT': {
+        'match': '\\s*((#).*)$'
+        'captures': {
+            1: 'name': 'comment.line.number-sign.logstash'
+            2: 'name': 'punctuation.definition.comment.logstash'
+        }
+    }
+    'CONDITION': {
+        'comment': "If condition"
+        'name': 'meta.condition.logstash'
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'include': '#CONDITION_SUB'
+        },{
+            'include': '#BAREWORD'
+        },{
+            'include': '#OPERATOR'
+        },{
+            'include': '#REGEX'
+        },{
+            'include': '#SELECTOR'
+        },{
+            'include': '#STRING'
+        },{
+            'include': '#ARRAY'
+        }]
+    }
+    'CONDITION_SUB': {
+        'begin': '\\('
+        'beginCaptures': {
+            0: 'name': 'punctuation.definition.condition.begin.logstash'
+        }
+        'end': '\\)'
+        'endCaptures': {
+            0: 'name': 'punctuation.definition.condition.end.logstash'
+        }
+        'patterns': [{
+            'include': '#CONDITION'
+        }]
+    }
+    'ESCAPED_CHARS': {
+        'comment': 'Ruby escaped chars'
+        'patterns': [{
+            'name': 'constant.character.escape.logstash'
+            'match': '(?>\\\\([0-7]{3}|x\\h{2}|.))'
+        }]
+    }
+    'HASH': {
+        'name': 'meta.dictionary.logstash'
+        'begin': '\\{'
+        'beginCaptures': {
+            0: 'name': 'punctuation.definition.dictionary.begin.logstash'
+        }
+        'end': '\\}'
+        'endCaptures': {
+            0: 'name': 'punctuation.definition.dictionary.end.logstash'
+        }
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'include': '#HASH_ENTRY'
+        }]
+    }
+    'HASH_ENTRY': {
+        'comment': 'KEY => VALUE'
+        'name': 'meta.key-value.logstash'
+        'begin': '(\\d+|\\b[a-zA-Z_][a-zA-Z0-9_\\-]*\\b|"(?:[^"]|\\")*"|\'(?:[^\']|\\\')*\')\\s*(=>)'
+        'beginCaptures': {
+            1: 'name': 'variable.other.logstash'
+            2: 'name': 'keyword.operator.key-value.logstash'
+        }
+        'end': '(?<=\\]|\\}|[A-Za-z0-9_\\-]|"|\')'
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'include': '#BAREWORD'
+        },{
+            'include': '#STRING'
+        },{
+            'include': '#NUMBER'
+        },{
+            'include': '#ARRAY'
+        },{
+            'include': '#HASH'
+        },{
+            'include': '#PLUGIN'
+        }]
+    }
+    'NUMBER': {
+        'name': 'constant.numeric.logstash'
+        'match': '-?\\d+(?:\\.\\d*)?'
+    }
+    'OPERATOR': {
+        'patterns': [{
+            'name': 'keyword.operator.comparison.logstash'
+            'match': '(?:==|!=|<|>|<=|>=|=~|!~|in|not in)'
+        },{
+            'name': 'keyword.operator.logical.logstash'
+            'match': '(?:and|or|nand|xor|!)'
+        }]
+    }
+    'PLUGIN': {
+        'comment': "Plugin with attributes"
+        'name': 'meta.function.logstash'
+        'patterns': [{
+            'comment': 'Literal plugin name'
+            'begin': '(?<=^|\\{|\\}|=>)\\s*([A-Za-z0-9_\\-]+)\\s*(\\{)'
+            'beginCaptures': {
+                1: 'name': 'entity.name.function.logstash'
+                2: 'name': 'punctuation.definition.function.begin.logstash'
+            }
+            'end': '\\}'
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.function.end.logstash'
+            }
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#ATTRIBUTE'
+            }]
+        },{
+            'comment': 'Double quoted plugin name'
+            'begin': '(?<=^|\\{|\\}|=>)\\s*("(?:\\"|[^"])*")\\s*(\\{)'
+            'beginCaptures': {
+                1: 'name': 'entity.name.function.logstash'
+                2: 'name': 'punctuation.definition.function.begin.logstash'
+            }
+            'end': '\\}'
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.function.end.logstash'
+            }
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#ATTRIBUTE'
+            }]
+        },{
+            'comment': 'Single quoted plugin name'
+            'begin': '(?<=^|\\{|\\}|=>)\\s*(\'(?:\\\'|[^\'])*\')\\s*(\\{)'
+            'beginCaptures': {
+                1: 'name': 'entity.name.function.logstash'
+                2: 'name': 'punctuation.definition.function.begin.logstash'
+            }
+            'end': '\\}'
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.function.end.logstash'
+            }
+            'patterns': [{
+                'include': '#COMMENT'
+            },{
+                'include': '#ATTRIBUTE'
+            }]
+        }]
+    }
+    'REGEX': {
+        'comment': 'Interpolated regular expression'
+        'name': 'string.regexp.logstash'
+        'begin': '\\/'
+        'end': '\\/'
+        'patterns': [{
+            'include': '#REGEX_SUB'
+        }]
+    }
+    'REGEX_SUB': {
+        'patterns': [{
+            'comment': 'Regex back reference'
+            'name': 'string.regexp.logstash'
+            'patterns': [{
+                'match': '\\\\k\'-?\w*(?:[+-]\w*)?\''
+            },{
+                'match': '\\\\k<-?\w*(?:[+-]\w*)?>'
+            }]
+        },{
+            'comment': 'Regex subexp call'
+            'name': 'string.regexp.logstash'
+            'patterns': [{
+                'match': '\\\\g\'-?\w*\''
+            },{
+                'match': '\\\\g<-?\w*>'
+            }]
+        },{
+            'comment': 'Regex character property'
+            'name': 'string.regexp.logstash'
+            'match': '\\\\[pP]\\{\\^?\\w*\\}'
+        },{
+            'include': '#ESCAPED_CHARS'
+        },{
+            'include': '#VARIABLE_INTERPOLATED'
+        },{
+            'comment': 'Regex elements, quantifiers and anchors'
+            'name': 'string.regexp.logstash'
+            'match': '(?:\\||\\.|\\?|\\*|\\+|\\{\\d*(?:,\\d*)?\\}|\\^|\\$)'
+        },{
+            'comment': 'Regex character class'
+            'name': 'string.regexp.logstash'
+            'begin': '\\['
+            'end': '\\]'
+            'patterns': [{
+                'include': '#ESCAPED_CHARS'
+            },{
+                'match': '\\[:\\w*:\\]'
+            }]
+        },{
+            'comment': 'Regex options on/off'
+            'name': 'string.regexp.logstash'
+            'match': '\\(\\?[imx]*(?:-[imx]*)?\\)'
+        },{
+            'comment': 'Regex extended form'
+            'begin': '\\(\\?[im]*x[im]*(?:-[im]*)?:'
+            'end': '\\)'
+            'captures': {
+                0: 'name': 'string.regexp.logstash'
+            }
+            'patterns': [{
+                'include': '#REGEX_SUB_EXTENDED'
+            }]
+        },{
+            'comment': 'Regex extended groups'
+            'begin': '\\((?:\\?[imx]*(?:-[imx]*)?:|\\?:|\\?=|\\?!|\\?<=|\\?<!|\\?>|\\?<\w*>|)'
+            'end': '\\)'
+            'captures': {
+                0: 'name': 'string.regexp.logstash'
+            }
+            'patterns': [{
+                'include': '#REGEX_SUB'
+            }]
+        },{
+            'comment': 'Regex comment'
+            'name': 'comment.block.other.logstash'
+            'begin': '\\(\\?#'
+            'end': '\\)'
+        }]
+    }
+    'REGEX_SUB_EXTENDED': {
+        'comment': 'Regex extended form'
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'comment': 'Regex extended groups'
+            'begin': '\\((?:\\?[imx]*(?:-[imx]*)?:|\\?:|\\?=|\\?!|\\?<=|\\?<!|\\?>|\\?<\w*>|)'
+            'end': '\\)'
+            'captures': {
+                0: 'name': 'string.regexp.logstash'
+            }
+            'patterns': [{
+                'include': '#REGEX_SUB_EXTENDED'
+            }]
+        },{
+            'include': '#REGEX_SUB'
+        }]
+    }
+    'RUBY_INTERPOLATED': {
+        'comment': 'Ruby code embeded in a string'
+        'patterns': [{
+            'begin': '"'
+            'beginCaptures': {
+                0: 'name': 'punctuation.definition.string.begin.logstash'
+            }
+            'end': '"'
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.string.end.logstash'
+            }
+            'patterns': [{
+                'include': 'source.ruby'
+            }]
+        },{
+            'begin': '\''
+            'beginCaptures': {
+                0: 'name': 'punctuation.definition.string.begin.logstash'
+            }
+            'end': '\''
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.string.end.logstash'
+            }
+            'patterns': [{
+                'include': 'source.ruby'
+            }]
+        }]
+    }
+    'SECTION': {
+        'comment': 'Logstash configuration section'
+        'name': 'meta.class.logstash'
+        'begin': '\\b(?:(input|filter|output)|(\\S*))\\s*(\\{)'
+        'beginCaptures': {
+            1: 'name': 'entity.name.class.logstash'
+            2: 'name': 'invalid.illegal.class.logstash'
+            3: 'name': 'punctuation.definition.class.begin.logstash'
+        }
+        'end': '\\}'
+        'endCaptures': {
+            0: 'name': 'punctuation.definition.class.end.logstash'
+        }
+        'patterns': [{
+            'include': '#COMMENT'
+        },{
+            'include': '#BRANCH_OR_PLUGIN'
+        }]
+    }
+    'SELECTOR': {
+        'comment': 'Variable name enclosed in []'
+        'name': 'variable.other.logstash'
+        'match': '(?:\\[[@!\\w\\-]*\\])'
+    }
+    'STRING': {
+        'patterns': [{
+            'comment': 'String containing variable name enclosed in []'
+            'name': 'variable.other.logstash'
+            'match': '("|\')(?:\\[[@!\\w\\-]*\\])+(\\k<1>)'
+        },{
+            'comment': 'Single quoted string'
+            'name': 'string.quoted.single.logstash'
+            'begin': '"'
+            'beginCaptures': {
+                0: 'name': 'punctuation.definition.string.begin.logstash'
+            }
+            'end': '"'
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.string.end.logstash'
+            }
+            'patterns': [{
+                'include': '#REGEX_SUB'
+            }]
+        },{
+            'comment': 'Double quoted string'
+            'name': 'string.quoted.double.logstash'
+            'begin': '\''
+            'beginCaptures': {
+                0: 'name': 'punctuation.definition.string.begin.logstash'
+            }
+            'end': '\''
+            'endCaptures': {
+                0: 'name': 'punctuation.definition.string.end.logstash'
+            }
+            'patterns': [{
+                'include': '#REGEX_SUB'
+            }]
+        }]
+    }
+    'VARIABLE_INTERPOLATED': {
+        'comment': 'Interpolated variables and grok patterns'
+        'name': 'meta.variable.interpolated.logstash'
+        'patterns': [{
+            'comment': 'Dynamic variable %{VARIABLE}'
+            'match': '(%\\{)([@!\\w\\-]*|(?:\\[[@!\\w\\-]*\\])+)(\\})'
+            'captures': {
+                1: 'name': 'punctuation.definition.variable.begin.logstash'
+                2: 'name': 'variable.other.logstash'
+                3: 'name': 'punctuation.definition.variable.end.logstash'
+            }
+        },{
+            'comment': 'Grok pattern %{SYNTAX:VARIABLE:TYPE}'
+            'match': '(%\\{)([@!\\w\\-]*|(?:\\[[@!\\w\\-]*\\])+)(?:(:)([@!\\w\\-]*|(?:\\[[@!\\w\\-]*\\])+)(?:(:)(\\w*))?)(\\})'
+            'captures': {
+                1: 'name': 'punctuation.definition.variable.begin.logstash'
+                2: 'name': 'storage.modifier.logstash'
+                3: 'name': 'punctuation.definition.variable.logstash'
+                4: 'name': 'variable.other.logstash'
+                5: 'name': 'punctuation.definition.variable.logstash'
+                6: 'name': 'constant.language.logstash'
+                7: 'name': 'punctuation.definition.variable.end.logstash'
+            }
+        },{
+            'comment': 'Environment variable ${VARIABLE:DEFAULT}'
+            'match': '(\\$\\{)(\\w*)(?:(:)((?:[^}]|\\\\})*))?(\\})'
+            'captures': {
+                1: 'name': 'punctuation.definition.variable.begin.logstash'
+                2: 'name': 'variable.other.logstash'
+                3: 'name': 'punctuation.definition.variable.logstash'
+                4: 'name': 'constant.other.logstash'
+                5: 'name': 'punctuation.definition.variable.end.logstash'
+            }
+        },{
+            'comment': 'Ivalid variable or grok pattern'
+            'match': '[%$]\\{[^}]*\\}'
+            'name': 'invalid.illegal.string.interpolated.logstash'
+        }]
+    }
+}
