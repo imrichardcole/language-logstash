@@ -32,3 +32,6 @@
   'number':
     'prefix': 'num'
     'body': '${1:name} => $2'
+  'grok' :
+    'prefix': 'grok'
+    'body': 'grok {\n\t${1}match => { \"message\" => \"%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration}\" }\n}'
