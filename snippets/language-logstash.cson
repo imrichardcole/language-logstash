@@ -35,3 +35,9 @@
   'grok' :
     'prefix': 'grok'
     'body': 'grok {\n\t${1}match => { \"message\" => \"%{IP:client} %{WORD:method} %{URIPATHPARAM:request} %{NUMBER:bytes} %{NUMBER:duration}\" }\n}'
+  'syslog_pri':
+    'prefix': 'syslog_pri'
+    'body': 'syslog_pri {\n\t${1}# Nothing else required if your PRI field is already called \"syslog_pri\", otherwise add the following:\n\t${1}# syslog_pri_field_name => "your_syslog_pri_field_name"\n}'
+  'syslog':
+    'prefix': 'syslog'
+    'body': 'syslog {\n\t${1}port => 5514\n} # Replace 5514 with your preferred port number to listen on' 
