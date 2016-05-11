@@ -44,3 +44,9 @@
   'mutate (filter)':
     'prefix': 'mutate'
     'body': 'mutate {\n\t${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-mutate.html}\n}'
+  'remove_field (array)':
+    'prefix': 'remove_field'
+    'body': 'remove_field => [ \"${1:field1}\", \"${2:field2}\" ]'
+  'add_field (hash)':
+    'prefix': 'add_field'
+    'body': 'add_field => { \"${1:new_field_name}\" \=\> \"%{source_field${2}}\" }'
