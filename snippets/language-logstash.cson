@@ -40,4 +40,4 @@
     'body': 'syslog_pri {\n\t${1}# Nothing else required if your PRI field is already called \"syslog_pri\", otherwise add the following:\n\t${1}# syslog_pri_field_name => "your_syslog_pri_field_name"\n}'
   'syslog':
     'prefix': 'syslog'
-    'body': 'syslog {\n\t${1}port => 5514\n} # Replace 5514 with your preferred port number to listen on' 
+    'body': 'syslog {\n\t${1}# use port => 000 to set your preferred port number here, if not the default\n}'
