@@ -52,4 +52,4 @@
     'body': 'add_field => { \"${1:new_field_name}\" \=\> \"%{source_field${2}}\" }'
   'date (filter)':
     'prefix': 'date'
-    'body': 'date {\n\tmatch => [ \"${1:datefield}\", \"${2:yyyy-MM-dd HH:mm:ss}\" ] \n\t${3:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-date.html}\n}'
+    'body': 'date {\n\tmatch => [ \"${1:datefield}\", \"${2:MMM dd HH:mm:ss}\" ] \n\t${3:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-date.html}\n}'
