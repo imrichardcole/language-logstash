@@ -53,3 +53,6 @@
   'date (filter)':
     'prefix': 'date'
     'body': 'date {\n\tmatch => [ \"${1:datefield}\", \"${2:MMM dd HH:mm:ss}\" ] \n\t${3:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-date.html}\n}'
+  'geoip (filter)':
+    'prefix': 'geoip'
+    'body': 'geoip {\n\tsource => \"${1:source_field}\" \n\ttarget => \"${2:target_field}\"  ${3:\n\t#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-date.html}\n}'
