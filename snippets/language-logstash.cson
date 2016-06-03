@@ -1,34 +1,58 @@
 '.source.logstash':
   'input':
     'prefix': 'input'
-    'body': 'input {\n\t${1}\n}'
+    'body': 'input {\n\t${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/input-plugins.html}\n}'
   'filter':
     'prefix': 'filter'
-    'body': 'filter {\n\t${1}\n}'
+    'body': 'filter {\n\t${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/filter-plugins.html}\n}'
   'output':
     'prefix': 'output'
-    'body': 'output {\n\t${1}\n}'
-  'stdout':
+    'body': 'output {\n\t${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/output-plugins.html}\n}'
+  'stdout (output)':
     'prefix': 'stdout'
-    'body': 'stdout { $1 }'
+    'body': 'stdout { ${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-outputs-stdout.html} }'
   'codec':
     'prefix': 'codec'
-    'body': 'codec => ${1:name}$0'
+    'body': 'codec => ${1:name} ${2:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/codec-plugins.html}'
   'workers':
     'prefix': 'workers'
     'body': 'workers => ${1:number}$0'
-  'array':
+  'array (field)':
     'prefix': 'array'
     'body': '${1:name} => [ \"${2:value}\" ]'
-  'hash':
+  'hash (field)':
     'prefix': 'hash'
     'body': '${1:name} => { \"${2:key}\" => \"${3:value}\" }'
-  'string':
+  'string (field)':
     'prefix': 'string'
     'body': '${1:name} => \"${2:value}\"$3'
-  'boolean':
+  'boolean (field)':
     'prefix': 'boolean'
     'body': '${1:name} => $2true'
-  'number':
+  'number (field)':
     'prefix': 'num'
     'body': '${1:name} => $2'
+  'grok (filter)' :
+    'prefix': 'grok'
+    'body': 'grok {\n\tmatch => { \"${1:message}\" => \"${2:grok\-pattern}\" }\n\t${3:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-grok.html}\n}'
+  'syslog_pri (filter)':
+    'prefix': 'syslog_pri'
+    'body': 'syslog_pri {\n\t${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-syslog_pri.html}\n}'
+  'syslog (input)':
+    'prefix': 'syslog'
+    'body': 'syslog {\n\t${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-inputs-syslog.html}\n}'
+  'mutate (filter)':
+    'prefix': 'mutate'
+    'body': 'mutate {\n\t${1:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-mutate.html}\n}'
+  'remove_field (array)':
+    'prefix': 'remove_field'
+    'body': 'remove_field => [ \"${1:field1}\", \"${2:field2}\" ]'
+  'add_field (hash)':
+    'prefix': 'add_field'
+    'body': 'add_field => { \"${1:new_field_name}\" \=\> \"%{source_field${2}}\" }'
+  'date (filter)':
+    'prefix': 'date'
+    'body': 'date {\n\tmatch => [ \"${1:datefield}\", \"${2:MMM dd HH:mm:ss}\" ] \n\t${3:#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-date.html}\n}'
+  'geoip (filter)':
+    'prefix': 'geoip'
+    'body': 'geoip {\n\tsource => \"${1:source_field}\" \n\ttarget => \"${2:target_field}\"  ${3:\n\t#https:\/\/www.elastic.co\/guide\/en\/logstash\/current\/plugins-filters-date.html}\n}'
